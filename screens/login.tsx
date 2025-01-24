@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import CONFIG from '../config';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');

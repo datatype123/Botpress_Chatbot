@@ -2,7 +2,7 @@ import {useState} from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import Config from 'react-native-config';
+import CONFIG from '../config';
 import React from 'react';
 
 const SignupScreen: React.FC = () => {
@@ -17,7 +17,7 @@ const SignupScreen: React.FC = () => {
   const Headers = {
     headers: {
       'Content-Type': 'application/json',
-      'Api-Token': process.env.SENDBIRD_API_TOKEN,
+      'Api-Token': CONFIG.SENDBIRD_API_TOKEN,
     },
   };
   const navigation = useNavigation();
@@ -34,7 +34,7 @@ const SignupScreen: React.FC = () => {
     }
 
     try {
-      const response = await axios.post(`https://api-${process.env.SENDBIRD_APP_ID}.sendbird.com/v3/users`, data,Headers);
+      const response = await axios.post(CONFIG.BASE_URL+'/users', data,Headers);
       Alert.alert('Success', 'Signup successful!');
       console.log(response.data);
       navigation.navigate('Login'); // Navigate to the login screen

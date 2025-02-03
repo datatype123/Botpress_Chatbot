@@ -1,13 +1,14 @@
-# 🚀 Quy trình tạo ứng dụng chatbot kết hợp Sendbird AI và React Native
+# React Native & Sendbird Chatbot 
 
-## 1. Hiểu rõ yêu cầu của dự án
+
+## 1. Yêu cầu dự án
 
 - **Mục tiêu**: Xây dựng ứng dụng chatbot với tính năng nhắn tin thời gian thực và phản hồi tự động từ AI.
 - **Công cụ chính**:
-  - **React Native**: Phát triển ứng dụng di động đa nền tảng.
-  - **Sendbird SDK**: Cung cấp cơ sở hạ tầng nhắn tin thời gian thực và tích hợp chatbot AI.
+  - **React Native**: Framework của ReactJS.
+  - **Sendbird**: Cung cấp cơ sở hạ tầng nhắn tin thời gian thực và tích hợp chatbot AI.
   - **Sendbird AI**: Xử lý phản hồi tự động.
-  - **Backend (tùy chọn)**: Quản lý xác thực người dùng và các chức năng nâng cao.
+  - **API service**: Quản lý các service thông qua Frontend và Sendbird .
 
 ---
 
@@ -24,7 +25,7 @@ Dưới đây là danh sách các tính năng cần thiết và các hàm tươn
   - `registerUser(userData)`
   - `fetchUserProfile(userId)`
 
-### b. Giao diện chat
+### b. Giao diện chat (Đã hoàn thành)
 - **Tính năng**:
   - Nhắn tin thời gian thực.
   - Xem lại lịch sử tin nhắn.
@@ -45,7 +46,7 @@ Dưới đây là danh sách các tính năng cần thiết và các hàm tươn
   - Được cấu hình qua Sendbird Admin Panel.
   - Xây dựng hàm backend nếu cần xử lý logic chatbot phức tạp.
 
-### d. Quản lý kênh chat
+### d. Quản lý kênh chat (Đang phát triển)
 - **Tính năng**:
   - Tham gia hoặc tạo kênh chat.
   - Hỗ trợ kênh công khai và riêng tư.

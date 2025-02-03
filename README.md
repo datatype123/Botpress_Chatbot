@@ -143,4 +143,8 @@ Dưới đây là các màn hình cần có trong ứng dụng:
 
 ---
 
+## 8.User test case:
+- **User ID**: Astra
+- ""Nickname**: VIper
+
 Nếu bạn cần hỗ trợ cụ thể trong bất kỳ phần nào, hãy tạo issue hoặc liên hệ với nhóm phát triển! 🚀😊

@@ -1,7 +1,7 @@
 # React Native & Sendbird Chatbot 
 
 
-## 1. Yêu cầu dự án
+## 1. Giới thiệu
 
 - **Mục tiêu**: Xây dựng ứng dụng chatbot với tính năng nhắn tin thời gian thực và phản hồi tự động từ AI.
 - **Công cụ chính**:
@@ -9,10 +9,11 @@
   - **Sendbird**: Cung cấp cơ sở hạ tầng nhắn tin thời gian thực và tích hợp chatbot AI.
   - **Sendbird AI**: Xử lý phản hồi tự động.
   - **API service**: Quản lý các service thông qua Frontend và Sendbird .
-
+  - **Realm**: Database Mobile
+  - **FireBase** : Open_source Services 
 ---
 
-## 2. Xác định các tính năng cốt lõi
+## 2. Tính năng 
 
 Dưới đây là danh sách các tính năng cần thiết và các hàm tương ứng:
 
@@ -21,8 +22,8 @@ Dưới đây là danh sách các tính năng cần thiết và các hàm tươn
   - Đăng nhập/Đăng ký.
   - Hồ sơ người dùng (hình đại diện, tên hiển thị, v.v.).
 - **Hàm**:
-  - `loginUser(username, password)`
-  - `registerUser(userData)`
+  - `loginUser(username, password,confirm_password)`
+  - `signupUser(username, password, confirm_password,choose_image_account,phone(developing) )`
   - `fetchUserProfile(userId)`
 
 ### b. Giao diện chat (Đã hoàn thành)
@@ -32,8 +33,7 @@ Dưới đây là danh sách các tính năng cần thiết và các hàm tươn
   - Phản hồi từ chatbot AI.
   - Hiển thị trạng thái đang nhập và tin nhắn đã đọc.
 - **Hàm**:
-  - `initializeChat()`: Thiết lập SDK Sendbird.
-  - `fetchMessages(channelId)`: Lấy lịch sử tin nhắn.
+  - `fetchMessages(channelId)`: Lấy lịch sử tin nhắn.()
   - `sendMessage(text)`: Gửi tin nhắn.
   - `receiveMessage()`: Xử lý tin nhắn đến.
   - `markMessageAsRead(messageId)`: Đánh dấu tin nhắn đã đọc.
@@ -43,32 +43,32 @@ Dưới đây là danh sách các tính năng cần thiết và các hàm tươn
   - Phản hồi tự động cho câu hỏi của người dùng.
   - Tùy chỉnh hành vi chatbot qua bảng điều khiển Sendbird.
 - **Hàm**:
-  - Được cấu hình qua Sendbird Admin Panel.
-  - Xây dựng hàm backend nếu cần xử lý logic chatbot phức tạp.
+  - `choose_modelAI`: Lựa chọn AI chatbot và AI model 
+  - `choose_source` : Lựa chọn Bot truyền thống 
 
 ### d. Quản lý kênh chat (Đang phát triển)
 - **Tính năng**:
   - Tham gia hoặc tạo kênh chat.
   - Hỗ trợ kênh công khai và riêng tư.
 - **Hàm**:
-  - `createChannel(channelData)`
-  - `joinChannel(channelId)`
-  - `fetchChannels()`
+  - `createChannel(channelData)`: Tạo kênh mớimới
+  - `joinChannel(channelId)`: Tham gia vào 1 kênh đã có
+  - `fetchChannels()`: Hiển thị các kênh đang tham gia 
 
-### e. Thông báo đẩy
+### e. Thông báo đẩy (Đang phát triển )
 - **Tính năng**:
   - Gửi thông báo khi có tin nhắn mới.
 - **Hàm**:
-  - `configurePushNotifications()`
-  - `sendNotification(userId, message)`
+  - `configurePushNotifications()`: Cài đặt thông tin phiên bản và các permissions cho thiết bị
+  - `sendNotification(userId, message)`: Gửi thông báobáo
 
 ### f. Cài đặt người dùng
 - **Tính năng**:
   - Chỉnh sửa hồ sơ cá nhân.
   - Đăng xuất.
 - **Hàm**:
-  - `updateProfile(userData)`
-  - `logoutUser()`
+  - `updateProfile(userData)`: Thông tin của người dùngdùng
+  - `logoutUser()`: Đăng xuất tài khoản 
 
 ---
 
@@ -136,15 +136,17 @@ Dưới đây là các màn hình cần có trong ứng dụng:
 | Thành phần    | Công nghệ |
 |--------------|------------|
 | **Frontend** | React Native |
-| **Backend** (tùy chọn) | Sendbird Admin Panel / Backend tùy chỉnh |
-| **Cơ sở dữ liệu** | Firebase / MySQL / PostgreSQL |
-| **Thư viện giao diện** | React Native Gifted Chat, React Navigation |
+| **Backend** (tùy chọn) | Sendbird Admin Panel |
+| **Cơ sở dữ liệu** | Realm  |
+| **Thư viện giao diện** | React Navigation |
 | **Thông báo** | Firebase Cloud Messaging (FCM) |
 
 ---
 
 ## 8.User test case:
 - **User ID**: Astra
-- ""Nickname**: VIper
+- **Nickname**: VIper
 
-Nếu bạn cần hỗ trợ cụ thể trong bất kỳ phần nào, hãy tạo issue hoặc liên hệ với nhóm phát triển! 🚀😊
+## 9.Note:
+- docker 
+- CI/CD

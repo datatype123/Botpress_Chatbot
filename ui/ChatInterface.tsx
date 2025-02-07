@@ -1,3 +1,8 @@
+//TODO: continue code menu chat screen 
+//TODO: write function saveHistory() to show history chat in each group chat 
+//TODO: viet ham tao gruop chat moi
+
+
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, Image, ListRenderItemInfo } from 'react-native';
 
@@ -10,7 +15,6 @@ interface ChatItem {
 }
 
 const MenuChat: React.FC = () => {
-  // Sample chat data
   const chatData: ChatItem[] = [
     { id: '1', name: 'Family Group', lastMessage: 'Mom: Don\'t forget to call!', timestamp: '12:30 PM', avatar: 'https://via.placeholder.com/50' },
     { id: '2', name: 'Work Team', lastMessage: 'Reminder about the meeting at 3 PM', timestamp: '12:32 PM', avatar: 'https://via.placeholder.com/50' },

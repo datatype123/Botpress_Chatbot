@@ -1,6 +1,9 @@
+//TODO: sua lai header bar gom 3 item chinh: nut back, ten screen va nut account
+//TODO: viet code cho acccount screen
+
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import React,{useRef,useState} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, StyleProp, ViewStyle,DrawerLayoutAndroid } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { GlyphMap, IconButtonProps, IconProps } from '@expo/vector-icons/build/createIconSet';
 
@@ -13,6 +16,9 @@ interface HeaderBarProps  {
   onBackPressLeft?: () => void;
   onBackPressRight?: ()=> void;
   icon:String;
+  iconLeft:String;
+  iconRight: String
+  
 }
 
 /* interface Button*/
@@ -34,16 +40,26 @@ const Button: React.FC<ButtonProps> =({isHide,onBackPressLeft,onBackPressRight,i
 
 
 /*Component Header */
-const HeaderBar: React.FC<HeaderBarProps> = ({ title, style, onProfilePress, onBackPressLeft,onBackPressRight,isHide ,icon}) => {
+const HeaderBar: React.FC<HeaderBarProps> = ({ title, style, onProfilePress, onBackPressLeft,onBackPressRight,isHide ,iconLeft,iconRight}) => {
+  const isHideMain = title=='Chat' ? true:false;
+  const drawer = useRef<DrawerLayoutAndroid>(null);
+  const navigationView = () => (
+    <View style={[styles.container, styles.navigationContainer]}>
+      <Text style={styles.paragraph}>I'm in the Drawer!</Text>
+      <Button isHide={false} icon={'close'} onBackPressLeft={()=>drawer.current?.closeDrawer()} ></Button>
+    </View>
+  );
   return (
     <View style={[styles.headerContainer, style]}>
-      {/* Back Button (Optional) */}
-      <Button isHide={isHide} onBackPressLeft={onBackPressLeft} icon={icon}></Button>
+      {/* Left Button (Optional) */}
+      <Button isHide={isHideMain} onBackPressLeft={onBackPressLeft} icon={iconLeft}></Button>
 
       {/* Title */}
+      
       <Text style={styles.title}>{title}</Text>
 
-      <Button isHide={isHide} onBackPressRight={onBackPressRight} icon={icon}></Button>
+      {/** Right Button */}
+      <Button isHide={isHideMain} onBackPressRight={onBackPressRight} icon={iconRight}></Button>
 
       
     </View>
@@ -102,6 +118,20 @@ const styles = StyleSheet.create({
   },
   profileIcon: {
     fontSize: 20,
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  navigationContainer: {
+    backgroundColor: '#ecf0f1',
+  },
+  paragraph: {
+    padding: 16,
+    fontSize: 15,
+    textAlign: 'center',
   },
 });
 

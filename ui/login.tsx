@@ -1,11 +1,20 @@
+/*TODO: fix function component addUser()
+FIXED: addUser function have:
+  - insert data to realm
+  - check data is existed
+  - return data & console log data
+FIXME: sua lai truong hop neu ng dung cu dang nhap thi chi query data ra thoi
+NOTE: bo comment trong line 30 de test kha nang us
+*/ 
+
+
 import React, { useState, useCallback } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import HeaderBar from '../components/HeaderBar';
 import { loginUser } from '../services/apiLogin';
-import {addUser} from '../DB/insertDB';
-import Realm from 'realm';
+import addUser from '../DB/insertDB';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -17,7 +26,21 @@ export default function LoginScreen() {
     try {
       const userData = await loginUser(email);
       console.log(userData);
-      addUser();
+
+      // addUser(
+      //   'user123111231127',
+      //   'TestUser',
+      //   'someAccessToken',
+      //   new Date(),
+      //   true,
+      //   false,
+      //   'asdasd'
+      //   // userData['user_id'],
+      //   // userData['nickname'],
+      //   // userData['access_token'],
+      //   // new Date(),
+      //   // userData['is_active']
+      // );
       navigation.navigate("Chat");
     } catch (error) {
       console.error('Login failed:', error);
@@ -27,7 +50,7 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       {/* Fixed Header */}
-      <HeaderBar title="Login" style={styles.header} onBackPressLeft={() => navigation.navigate('Signup')} isHide={false} icon={"arrow-back"}/>
+      <HeaderBar title="Login" style={styles.header} onBackPressLeft={() => navigation.navigate('Signup')} isHide={false} iconLeft={"arrow-back"} iconRight={"menu"} icon={"menu"}/>
 
       {/* Main Content */}
       <View style={styles.content}>

@@ -1,9 +1,15 @@
+//TODO: them hinh anh account user 
+//TODO: them header bar 
+//TODO: viet ham nhan thong bao day khi tin nhan den
+//TODO: query data tu realm ra va hien thi ra man hinh
+
 import React, { useState } from 'react';
 import { View, FlatList, TextInput, TouchableOpacity, Text, StyleSheet, KeyboardAvoidingView,Platform } from 'react-native';
 import post from '../services/sendMessage';
 import Markdown from 'react-native-markdown-display';
 import TypeWriterEffect from 'react-native-typewriter-effect';
 import HeaderBar from '../components/HeaderBar';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const ChatScreen = () => {
   const [messages, setMessages] = useState([
@@ -25,6 +31,7 @@ const ChatScreen = () => {
       text: inputText,
       user: 'You',
     };
+
     setMessages((prevMessages) => [userMessage, ...prevMessages]);
 
     setInputText(''); // Clear input field
@@ -52,7 +59,7 @@ const ChatScreen = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.main}>
       <View>
-        <HeaderBar isHide={false} title='Chat' icon={"menu"}></HeaderBar>
+        <HeaderBar isHide={false} title='Chat' icon={"menu"} iconLeft={"menu"} iconRight={"settings"}></HeaderBar>
       </View>
       <View style={styles.container}>
       <FlatList
@@ -75,7 +82,9 @@ const ChatScreen = () => {
           placeholder="Type a message"
         />
         <TouchableOpacity style={styles.sendButton} onPress={handleSendMessage}>
-          <Text style={styles.sendButtonText}>Send</Text>
+          <Text style={styles.sendButtonText}>
+            <Ionicons name='send'></Ionicons>
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -96,6 +105,10 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     marginVertical: 5,
+    backgroundColor:'#EFE9D5',
+    padding:20,
+    borderCurve:'circular',
+    borderRadius:20,
   },
   user: {
     fontWeight: 'bold',

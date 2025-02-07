@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import HeaderBar from '../components/HeaderBar';
 import { signupUser } from '../services/apiSignup';  // Import API function
 
@@ -43,7 +43,7 @@ const SignupScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       {/* Fixed Header Bar */}
-      <HeaderBar title="Sign Up" style={styles.header} isHide={false} icon={"menu"} />
+      {/* <HeaderBar title="Sign Up" style={styles.header} isHide={false} icon={"menu"} iconLeft={'menu'} iconRight={'menu'} /> */}
 
       {/* Main Signup Form */}
       <View style={styles.content}>
@@ -84,11 +84,7 @@ const SignupScreen: React.FC = () => {
         <View style={styles.buttonContainer}>
           <Button title="Login" onPress={() => navigation.navigate('Login')} />
         </View>
-
-        {/* Firebase Test Button (Hidden by default) */}
-        {/* <View style={styles.buttonContainer}>
-          <Button title="Test FB" onPress={connectFB} />
-        </View>  */}
+        
       </View>
     </View>
   );

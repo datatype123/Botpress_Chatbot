@@ -1,3 +1,5 @@
+//TODO: thay dinh dang thanh JS
+
 import React, { useState } from "react";
 import axios from "axios";
 import CONFIG from "../config";

@@ -1,5 +1,6 @@
 package com.anonymous.RN_chatbot4
 import expo.modules.splashscreen.SplashScreenManager
+import org.pgsqlite.SQLitePluginPackage;
 
 import android.os.Build
 import android.os.Bundle

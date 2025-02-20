@@ -1,28 +1,23 @@
 import axios from 'axios';
 import CONFIG from '../config';
+import { insertUser } from '../database/insertDB';
 
-/**
- * Axios instance with base configuration
- */
 const apiService = axios.create({
-  baseURL: CONFIG.BASE_URL,
+  baseURL: CONFIG.WEB_HOOK_URL,
   headers: {
     'Content-Type': 'application/json',
-    'Api-Token': CONFIG.SENDBIRD_API_TOKEN,
   },
 });
 
-/**
- * Registers a new user on Sendbird.
- * @param {string} userID - The user ID for registration.
- * @param {string} nickname - The nickname for the user.
- */
-export const signupUser = async (userID, nickname) => {
+export const signupUser = async ( name, userId, profile ) => {
   try {
+
     const response = await apiService.post('/users', {
-      user_id: userID,
-      nickname: nickname,
+      name,
+      profile,
+      id: userId,
     });
+
     return response.data;
   } catch (error) {
     throw error;

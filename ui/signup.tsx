@@ -1,138 +1,117 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
-import HeaderBar from '../components/HeaderBar';
-import { signupUser } from '../services/apiSignup';  // Import API function
-
+import { 
+  View, Text, TextInput, TouchableOpacity, Alert, StyleSheet, ActivityIndicator
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { signupUser } from '../services/apiSignup';
+import { insertUser } from '../database/insertDB';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserKey } from '../redux/slice';
 
 const SignupScreen: React.FC = () => {
-  // **State variables for user input**
   const [userID, setUserID] = useState('');
   const [nickname, setNickname] = useState('');
   const [confirmNickname, setConfirmNickname] = useState('');
+  const [profile, setProfile] = useState('');
+  const [isHidden, setIsHidden] = useState(true);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const user_key = useSelector((state:any) => state.app.user_key);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  /**
-   * Handles user signup process
-   */
+  /**Handle data Signup */
   const handleSignup = async () => {
-    // **Validation checks**
+    setIsLoading(true);
+
     if (!userID || !nickname || !confirmNickname) {
-      Alert.alert('Error', 'All fields are required.');
+      setError('All fields are required.');
       return;
     }
 
     if (nickname !== confirmNickname) {
-      Alert.alert('Error', 'Nicknames do not match.');
+      setError('Nicknames do not match.');
       return;
     }
 
     try {
-      // **API Call to register user**
-      await signupUser(userID, nickname);
+      const response = await signupUser(userID, nickname, profile);
+      console.log(response["key"])
+      insertUser(userID, nickname, '', response["key"]);
+      console.log('insert done')
       Alert.alert('Success', 'Signup successful!');
-
-      // **Navigate to Chat screen after signup**
-      navigation.navigate("Chat");
+      dispatch(setUserKey(response["key"]));
+      navigation.navigate('BottomNavigation');
+      dispatch(setUserKey(response["key"]));
+      console.log(user_key);
     } catch (error: any) {
       console.error('Signup error:', error);
-      Alert.alert('Error', error.response?.data?.message || 'Signup failed.');
+      setError(error.response?.data?.message || 'Signup failed.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      {/* Fixed Header Bar */}
-      {/* <HeaderBar title="Sign Up" style={styles.header} isHide={false} icon={"menu"} iconLeft={'menu'} iconRight={'menu'} /> */}
+      <Text style={styles.title}>Create Account</Text>
+      {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      {/* Main Signup Form */}
-      <View style={styles.content}>
-        <Text style={styles.title}>Signup</Text>
+      <TextInput placeholder="User ID" value={userID} onChangeText={setUserID} style={styles.input} autoCapitalize="none" />
 
-        {/* User ID Input */}
-        <TextInput
-          placeholder="User ID"
-          value={userID}
-          onChangeText={setUserID}
-          style={styles.input}
-        />
-
-        {/* Nickname Input */}
-        <TextInput
-          placeholder="Nickname"
-          value={nickname}
-          onChangeText={setNickname}
-          secureTextEntry
-          style={styles.input}
-        />
-
-        {/* Confirm Nickname Input */}
-        <TextInput
-          placeholder="Confirm Nickname"
-          value={confirmNickname}
-          onChangeText={setConfirmNickname}
-          secureTextEntry
-          style={styles.input}
-        />
-
-        {/* Signup Button */}
-        <View style={styles.buttonContainer}>
-          <Button title="Sign Up" onPress={handleSignup} color="#007AFF" />
-        </View>
-
-        {/* Navigate to Login */}
-        <View style={styles.buttonContainer}>
-          <Button title="Login" onPress={() => navigation.navigate('Login')} />
-        </View>
-        
+      <View style={styles.inputRow}>
+        <TextInput placeholder="Nickname" value={nickname} onChangeText={setNickname} secureTextEntry={isHidden} style={[styles.input, styles.flexInput]} autoCapitalize="none" />
+        <TouchableOpacity style={styles.toggleButton} onPress={() => setIsHidden(!isHidden)}>
+          <Text style={styles.toggleButtonText}>{isHidden ? '👁️' : '🙈'}</Text>
+        </TouchableOpacity>
       </View>
+
+      <TextInput placeholder="Confirm Nickname" value={confirmNickname} onChangeText={setConfirmNickname} secureTextEntry={isHidden} style={styles.input} autoCapitalize="none" />
+      <TextInput placeholder="Profile (Optional)" value={profile} onChangeText={setProfile} style={styles.input} autoCapitalize="sentences" />
+
+      <TouchableOpacity style={styles.signupButton} onPress={handleSignup} disabled={isLoading}>
+        {isLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.signupButtonText}>Sign Up</Text>}
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.loginRedirect} onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.loginText}>Already have an account? <Text style={styles.loginLink}>Log in</Text></Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-// **💎 Optimized Styling**
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 60,
-  },
-  header: {
-    position: 'absolute',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    flex: 1,
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 120, // Adjust height based on your HeaderBar
-    zIndex: 10,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    marginTop: 60, // Push content below the fixed header
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', backgroundColor: 'white', paddingHorizontal: 20,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+    fontSize: 26, fontWeight: 'bold', marginBottom: 20, color: '#333',
   },
   input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
+    width: '100%', height: 50, borderWidth: 1, borderColor: '#ccc', borderRadius: 8, paddingHorizontal: 15, backgroundColor: '#fff', marginBottom: 12,
   },
-  buttonContainer: {
-    width: '100%',
-    paddingVertical: 10,
+  inputRow: {
+    flexDirection: 'row', alignItems: 'center', width: '100%', marginBottom: 12,
   },
+  flexInput: { flex: 1 },
+  toggleButton: {
+    marginLeft: 10, backgroundColor: '#007bff', padding: 12, borderRadius: 6,
+  },
+  toggleButtonText: {
+    color: '#fff', fontSize: 16,
+  },
+  signupButton: {
+    width: '100%', backgroundColor: '#007bff', paddingVertical: 14, borderRadius: 8, alignItems: 'center', marginTop: 10,
+  },
+  signupButtonText: {
+    color: 'white', fontSize: 18, fontWeight: 'bold',
+  },
+  loginRedirect: { marginTop: 15 },
+  loginText: { fontSize: 14, color: '#555' },
+  loginLink: { color: '#007bff', fontWeight: 'bold' },
+  error: { color: 'red', marginBottom: 10 },
 });
 
 export default SignupScreen;

@@ -1,145 +1,199 @@
-/*TODO: fix function component addUser()
-FIXED: addUser function have:
-  - insert data to realm
-  - check data is existed
-  - return data & console log data
-FIXME: sua lai truong hop neu ng dung cu dang nhap thi chi query data ra thoi
-NOTE: bo comment trong line 30 de test kha nang us
-*/ 
-
-
-import React, { useState, useCallback } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet, 
+  ActivityIndicator, 
+  Alert,
+  Appearance
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import HeaderBar from '../components/HeaderBar';
+import { getAllUsers, getItem} from '../database/insertDB';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserKey } from '../redux/slice';
 import { loginUser } from '../services/apiLogin';
-import addUser from '../DB/insertDB';
+
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [UserId, setUserId] = useState('');
   const [isSecure, setIsSecure] = useState(true);
-  const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigation = useNavigation<any>();
+  const dispatch = useDispatch();
 
-  const handleLogin = useCallback(async () => {
-    try {
-      const userData = await loginUser(email);
-      console.log(userData);
+  const waitForSeconds = (seconds = 2) => {
+    return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+  };
+  
 
-      // addUser(
-      //   'user123111231127',
-      //   'TestUser',
-      //   'someAccessToken',
-      //   new Date(),
-      //   true,
-      //   false,
-      //   'asdasd'
-      //   // userData['user_id'],
-      //   // userData['nickname'],
-      //   // userData['access_token'],
-      //   // new Date(),
-      //   // userData['is_active']
-      // );
-      navigation.navigate("Chat");
-    } catch (error) {
-      console.error('Login failed:', error);
+  const handleLogin = async () => {
+    if (!nickname || !UserId) {
+      setError('User ID and UserId are required.');
+      return;
     }
-  }, [email, navigation]);
+
+    setIsLoading(true);
+
+    try {
+      const key = await getItem(nickname,'user_key');
+      dispatch(setUserKey(key));
+      loginUser(nickname,UserId, dispatch);
+      await waitForSeconds(1.4);
+      getAllUsers();
+      setIsLoading(false);
+      navigation.navigate("BottomNavigation");
+    } catch (error) {
+      setIsLoading(false);
+      setError('Login failed. Please check your credentials.');
+    }
+  };
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert('Error', error);
+      setError('');
+    }
+  }, [error]);
 
   return (
     <View style={styles.container}>
-      {/* Fixed Header */}
-      <HeaderBar title="Login" style={styles.header} onBackPressLeft={() => navigation.navigate('Signup')} isHide={false} iconLeft={"arrow-back"} iconRight={"menu"} icon={"menu"}/>
+      <Text style={styles.title}>Welcome Back!</Text>
+      <Text style={styles.subtitle}>Login to continue</Text>
 
-      {/* Main Content */}
-      <View style={styles.content}>
-        <Text style={styles.title}>Login</Text>
+      {/* User ID Input */}
+      <TextInput
+        placeholder="Nickname"
+        value={nickname}
+        onChangeText={setNickname}
+        style={styles.input}
+        autoCapitalize="none"
+      />
 
-        {/* User ID Input */}
+      {/* UserId Input */}
+      <View style={styles.UserIdContainer}>
         <TextInput
           placeholder="User ID"
-          value={email}
-          onChangeText={setEmail}
+          value={UserId}
+          onChangeText={setUserId}
+          secureTextEntry={isSecure}
           style={styles.input}
         />
-
-        {/* Password Input with Toggle Visibility */}
-        <View style={styles.passwordContainer}>
-          <TextInput
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={isSecure}
-            style={[styles.input, { flex: 1 }]}
-          />
-          <TouchableOpacity onPress={() => setIsSecure(!isSecure)} style={styles.eyeButton}>
-            <Ionicons name={isSecure ? "eye-off" : "eye"} size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-
-        {/* Buttons */}
-        <View style={styles.buttonContainer}>
-          <Button title="Login" onPress={handleLogin} color="#007AFF" />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button title="Sign Up" onPress={() => navigation.navigate('Signup')}  />
-        </View>
+        <TouchableOpacity 
+          onPress={() => setIsSecure(!isSecure)} 
+          style={styles.eyeButton}
+        >
+          <Text style={styles.toggleButtonText}>{isSecure ? '👁️' : '🙈'}</Text>
+        </TouchableOpacity>
       </View>
+
+      {/* Login Button */}
+      <TouchableOpacity 
+        style={styles.loginButton} 
+        onPress={handleLogin}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <Text style={styles.loginButtonText}>Login</Text>
+        )}
+      </TouchableOpacity>
+
+      {/* Forgot UserId */}
+      <TouchableOpacity>
+        <Text style={styles.forgotUserIdText}>Forgot UserId?</Text>
+      </TouchableOpacity>
+
+      {/* Sign Up Link */}
+      <TouchableOpacity 
+        style={styles.signUpRedirect} 
+        onPress={() => navigation.navigate('Signup')}
+      >
+        <Text style={styles.signUpText}>
+          Don't have an account? <Text style={styles.signUpLink}>Sign Up</Text>
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
-// **💎 Optimized Styling**
+// ** Optimized Styling**
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
-    paddingTop: 40,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    // height: 120,
-  },
-  content: {
-    flex: 1,
+    backgroundColor: "white",
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 25,
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#007AFF',
+    color: "black",
+    marginBottom: 5,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 25,
   },
   input: {
     width: '100%',
     height: 50,
-    borderColor: '#ccc',
     borderWidth: 1,
+    borderColor: '#ddd',
     borderRadius: 10,
-    marginBottom: 20,
     paddingHorizontal: 15,
     fontSize: 16,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: '#fff',
+    marginBottom: 15,
   },
-  passwordContainer: {
+  toggleButtonText: {
+    color: '#fff', fontSize: 16,
+  },
+  UserIdContainer: {
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
+    position: 'relative',
   },
   eyeButton: {
-    justifyContent:'center',
     position: 'absolute',
     right: 15,
+    bottom:20,
+    padding:10,
   },
-  buttonContainer: {
+  loginButton: {
     width: '100%',
-    paddingVertical: 10,
+    backgroundColor: '#007AFF',
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  loginButtonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  forgotUserIdText: {
+    color: '#007AFF',
+    fontSize: 14,
+    marginTop: 15,
+  },
+  signUpRedirect: {
+    marginTop: 20,
+  },
+  signUpText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  signUpLink: {
+    color: '#007AFF',
+    fontWeight: 'bold',
   },
 });
-

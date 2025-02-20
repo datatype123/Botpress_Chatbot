@@ -1,4 +1,4 @@
-# React Native & Sendbird Chatbot 
+# React Native & BotPress Open-Source
 
 
 ## 1. Giới thiệu
@@ -39,7 +39,7 @@ Dưới đây là danh sách các tính năng cần thiết và các hàm tươn
 
 ### f. Cài đặt người dùng
 - **Tính năng**:
-  - Chỉnh sửa hồ sơ cá nhân.
+  - Chỉnh sửa hồ sơ cá nhân.(đang update)
   - Đăng xuất.
 
 ---
@@ -57,12 +57,12 @@ Dưới đây là các màn hình cần có trong ứng dụng:
 
 ## 5. Các bước triển khai chi tiết
 
-1. **Cài đặt cơ bản**: Tạo dự án React Native và tích hợp SDK Sendbird.
+1. **Cài đặt cơ bản**: Tạo dự án React Native và tích hợp BotPress Open Source.
 2. **Xác thực**: Thêm chức năng đăng nhập và đăng ký.
 3. **Tính năng chat**: Xây dựng giao diện chat và kích hoạt chatbot AI.
 4. **Cài đặt và quản lý hồ sơ**: Thêm tính năng chỉnh sửa hồ sơ và cài đặt.
 5. **Kiểm tra và khắc phục lỗi**: Đảm bảo mọi tính năng hoạt động trơn tru.
-66. **Triển khai**: Build và phát hành ứng dụng trên Android và iOS.
+66. **Triển khai**: Build ứng dụng trên Android .
 
 ---
 
@@ -70,7 +70,10 @@ Dưới đây là các màn hình cần có trong ứng dụng:
 - **Logic AI tùy chỉnh**: Tạo dịch vụ backend xử lý chatbot thông minh hơn.
 - **Chia sẻ tệp**: Hỗ trợ gửi hình ảnh, video và tài liệu.
 - **Phân tích dữ liệu**: Theo dõi hành vi người dùng và hiệu suất ứng dụng.
+- **Chat real-time giữa các user với nhau**: Theo dõi data real-time.
+- **Chia sẻ thông tin, dữ liệu**: Chia sẻ thông tin và dữ liệu người dùng.
+- **Xây dựng work-flow**: Xây dựng 1 kịch bản riêng cho bot phù hợp với nhu cầu.
 
-## 7.Test Account:
-- **User ID**: Cukcu1
-- **Nickname**: Cukcu
+## 7.How to Use:
+- Copy link githubg source code
+- 

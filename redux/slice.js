@@ -33,5 +33,8 @@ const appSlice = createSlice({
     }
 })
 
-export const {setUserKey,setTheme,increment,decrement,setBotMessage,setConversationId} = appSlice.actions;
+
+
+
+export const appActions= appSlice.actions;
 export default appSlice.reducer;

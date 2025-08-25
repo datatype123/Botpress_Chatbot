@@ -6,7 +6,8 @@ import { getAllConversations } from '../services/apiConversations';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setConversationId } from '../redux/slice';
+import { appActions } from '../redux/slice';
+import { format } from 'date-fns'; // Import thư viện date-fns
 
 interface ChatItem {
   id: string;
@@ -48,20 +49,29 @@ const GroupChat: React.FC = () => {
     fetchConversations();
   }, []);
 
-  const renderItem = ({ item }: { item: ChatItem }) => (
-    <TouchableOpacity
-      style={styles.chatItemContainer}
-      onPress={() => {
-        dispatch(setConversationId(item.id));
-        navigation.navigate('Chat');
-      }}>
-      <Image source={require('../assets/conversations.png')} style={styles.avatar} />
-      <View style={styles.chatInfoContainer}>
-        <Text style={styles.chatName}>{item.id}</Text>
-        <Text style={styles.lastMessage}>{item.createdAt}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const renderItem = ({ item }: { item: ChatItem }) => {
+    // Định dạng ngày giờ
+    const formattedDate = format(new Date(item.createdAt), 'dd MMM yyyy'); // Ngày
+    const formattedTime = format(new Date(item.createdAt), 'hh:mm a'); // Giờ
+
+    return (
+      <TouchableOpacity
+        style={styles.chatItemContainer}
+        onPress={() => {
+          dispatch(appActions.setConversationId(item.id));
+          navigation.navigate('Chat');
+        }}>
+        <Image source={require('../assets/conversations.png')} style={styles.avatar} />
+        <View style={styles.chatInfoContainer}>
+          <Text style={styles.chatName}>{item.id}</Text>
+          <View style={styles.dateTime}>
+            <Text style={styles.lastMessage}>{formattedDate}</Text>
+            <Text style={styles.lastMessage}>{formattedTime}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -149,6 +159,11 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 6,
   },
+  dateTime:{
+    display:'flex',
+    flexDirection:"row",
+    justifyContent:"space-between"
+  }
 });
 
 export default GroupChat;

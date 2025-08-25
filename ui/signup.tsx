@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { signupUser } from '../services/apiSignup';
 import { insertUser } from '../database/insertDB';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserKey } from '../redux/slice';
+import { appActions } from '../redux/slice';
 
 const SignupScreen: React.FC = () => {
   const [userID, setUserID] = useState('');
@@ -40,9 +40,9 @@ const SignupScreen: React.FC = () => {
       insertUser(userID, nickname, '', response["key"]);
       console.log('insert done')
       Alert.alert('Success', 'Signup successful!');
-      dispatch(setUserKey(response["key"]));
+      dispatch(appActions.setUserKey(response["key"]));
       navigation.navigate('BottomNavigation');
-      dispatch(setUserKey(response["key"]));
+      dispatch(appActions.setUserKey(response["key"]));
       console.log(user_key);
     } catch (error: any) {
       console.error('Signup error:', error);

@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import ChatScreen from '../ui/chat';
+import ChatScreen from '../ui/Chat/chat';
 import GroupChat from '../ui/GroupChat';
 import AccountScreen from '../ui/account';
 import { View,Image } from 'react-native';

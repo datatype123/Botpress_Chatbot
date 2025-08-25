@@ -48,7 +48,7 @@ const AccountScreen = () => {
 
   /**Logout user */
 const handleLogout = () => {
-  navigation.navigate("Login");
+  navigation.navigate("Login" as never);
 };
 
 /**Render component */

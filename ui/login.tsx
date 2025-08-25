@@ -14,13 +14,14 @@ import { getAllUsers, getItem} from '../database/insertDB';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserKey } from '../redux/slice';
 import { loginUser } from '../services/apiLogin';
+import { RootState } from '../redux/store';
 
 
 export default function LoginScreen() {
   const [nickname, setNickname] = useState('');
   const [UserId, setUserId] = useState('');
   const [isSecure, setIsSecure] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const isLoading = useSelector((state:RootState) => state.login.isLoading);
   const [error, setError] = useState('');
   const navigation = useNavigation<any>();
   const dispatch = useDispatch();
@@ -36,18 +37,11 @@ export default function LoginScreen() {
       return;
     }
 
-    setIsLoading(true);
-
     try {
       const key = await getItem(nickname,'user_key');
       dispatch(setUserKey(key));
-      loginUser(nickname,UserId, dispatch);
-      await waitForSeconds(1.4);
-      getAllUsers();
-      setIsLoading(false);
-      navigation.navigate("BottomNavigation");
+      loginUser(nickname,dispatch,navigation,key);
     } catch (error) {
-      setIsLoading(false);
       setError('Login failed. Please check your credentials.');
     }
   };

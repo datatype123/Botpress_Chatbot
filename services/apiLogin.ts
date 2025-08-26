@@ -3,9 +3,8 @@ import { showMessage } from "react-native-flash-message";
 import { loginActions } from '../redux/login';
 import { apiService } from './apiService';
 
-export const loginUser = async (nickname: string, dispatch: any, navigation: any,userKey:any) => {
+export const loginUser = async (nickname: string,userKey:any) => {
   try {
-    dispatch(loginActions.setLoading(true));
     // Lấy userKey từ AsyncStorage
     console.log("user_key",userKey);
 
@@ -25,10 +24,7 @@ export const loginUser = async (nickname: string, dispatch: any, navigation: any
     }
 
     // Cập nhật userKey vào Redux store bằng loginActions
-    dispatch(loginActions.setUserKey(userKey || ''));
 
-    // Điều hướng đến màn hình chính
-    navigation.navigate("BottomNavigation");
     return true; // Đăng nhập thành công
   } catch (error) {
     console.log('Error logging in user:', error);

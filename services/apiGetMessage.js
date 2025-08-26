@@ -17,7 +17,7 @@ export const apiGetMessage = async (user_key, dispatch, conversation_id) => {
             if (event.data && event.data.length > 0) {
                 const message = JSON.parse(event.data);
                 if (message["data"]["isBot"] === true) {
-                    console.log('data')
+                    console.log('data',message)
                     dispatch(appActions.setBotMessage(message["data"]["payload"]["text"]));
                 }
             }
@@ -49,11 +49,12 @@ export const getHistoryMessage = async (user_key,dispatch,conversation_id) =>{
         });
 
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+           console.log('Network response was not ok');
         }
 
         const data = await response.json();
         const messages = data.messages;
+        console.log('Fetched messages:', messages);
 
         // Dispatch bot messages to Redux store
         messages.forEach((message) => {
@@ -64,7 +65,7 @@ export const getHistoryMessage = async (user_key,dispatch,conversation_id) =>{
 
         return messages;
     } catch (error) {
-        console.error('Error fetching message history:', error);
+        console.log('Error fetching message history:', error);
         throw error;
     }
 }

@@ -79,6 +79,7 @@
     "react-native-sqlite-2": "^3.6.2",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-sse": "^1.2.1",
+    "react-native-toast-message": "^2.3.3",
     "react-native-typewriter-effect": "^0.1.4",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
@@ -87,6 +88,7 @@
     "realm": "^20.1.0",
     "redux": "^5.0.1",
     "redux-observable": "^3.0.0-rc.2",
+    "redux-persist": "^6.0.0",
     "rxjs": "^7.8.2"
   },
   "devDependencies": {

@@ -7,7 +7,11 @@ import { apiGetMessage } from '../../services/apiGetMessage';
 import { apiSend } from '../../services/apiSendMessage';
 import { RootState } from '../../redux/store';
 import { format } from 'date-fns';
-import {markdownStyles,styles} from './chat.styles.ts';
+import {markdownStyles,styles} from './chat.styles';
+import { conversationActions } from '../../redux/conversation';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const ChatScreen = () => {
   const user_key = useSelector((state: RootState) => state.app.user_key);
@@ -15,6 +19,7 @@ const ChatScreen = () => {
   const conversation_id = useSelector((state: RootState) => state.app.conversation_id);
   const [lastBotMessage, setLastBotMessage] = useState('');
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   interface Message {
     id: string;
@@ -55,28 +60,6 @@ const ChatScreen = () => {
     console.log("conversation_id:", conversation_id);
     await apiSend(inputText, user_key, conversation_id);
     await apiGetMessage(user_key, dispatch, conversation_id);
-  };
-
-  const renderItem = ({ item }: { item: ChatItem }) => {
-    // Định dạng ngày và giờ riêng biệt
-    const formattedDate = format(new Date(item.createdAt), 'dd MMM yyyy'); // Ngày
-    const formattedTime = format(new Date(item.createdAt), 'hh:mm a'); // Giờ
-
-    return (
-      <TouchableOpacity
-        style={styles.chatItemContainer}
-        onPress={() => {
-          dispatch(setConversationId(item.id));
-          navigation.navigate('Chat');
-        }}>
-        <Image source={require('../../assets/conversations.png')} style={styles.avatar} />
-        <View style={styles.chatInfoContainer}>
-          <Text style={styles.chatName}>{item.id}</Text>
-          <Text style={styles.date}>{formattedDate}</Text>
-          <Text style={styles.time}>{formattedTime}</Text>
-        </View>
-      </TouchableOpacity>
-    );
   };
 
   return (

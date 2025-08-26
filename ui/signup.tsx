@@ -7,6 +7,7 @@ import { signupUser } from '../services/apiSignup';
 import { insertUser } from '../database/insertDB';
 import { useDispatch, useSelector } from 'react-redux';
 import { appActions } from '../redux/slice';
+import {RootState} from '../redux/store';
 
 const SignupScreen: React.FC = () => {
   const [userID, setUserID] = useState('');
@@ -16,7 +17,7 @@ const SignupScreen: React.FC = () => {
   const [isHidden, setIsHidden] = useState(true);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const user_key = useSelector((state:any) => state.app.user_key);
+  const userKey = useSelector((state: RootState) => state.app?.user_key || '');
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -43,7 +44,7 @@ const SignupScreen: React.FC = () => {
       dispatch(appActions.setUserKey(response["key"]));
       navigation.navigate('BottomNavigation');
       dispatch(appActions.setUserKey(response["key"]));
-      console.log(user_key);
+      console.log(userKey);
     } catch (error: any) {
       console.error('Signup error:', error);
       setError(error.response?.data?.message || 'Signup failed.');

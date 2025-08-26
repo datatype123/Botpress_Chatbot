@@ -2,14 +2,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import FlashMessage from "react-native-flash-message";
+import Toast from 'react-native-toast-message';
 import { Provider } from 'react-redux';
 import BottomNavigation from './components/BottomNavigation';
-import store from './redux/store';
+import store, { persistor } from './redux/store';
 import ChatScreen from './ui/Chat/chat';
 import Conversation from './ui/Conversations/conversations';
 import GroupChat from './ui/GroupChat';
-import LoginScreen from './ui/login';
+import LoginScreen from './ui/Login/login';
 import SignupScreen from './ui/signup';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,8 +19,9 @@ export default function App() {
   return (
 
     <Provider store={store}>
-      <FlashMessage position="top" />
-      <NavigationContainer>
+      <PersistGate loading={null} persistor={persistor}>
+        <FlashMessage position="top" />
+        <NavigationContainer>
 
         <Stack.Navigator initialRouteName="Signup">
           <Stack.Screen
@@ -53,6 +56,8 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
+      </PersistGate>
+      <Toast />
     </Provider>
   );
 }

@@ -7,8 +7,7 @@ export const getAllConversations = async (user_key) => {
           
         return response.data.conversations;
     } catch (error) {
-        console.error('Error fetching conversation:', error);
-        throw error;
+        console.log('Error fetching conversation:', error);
     }
 };
 

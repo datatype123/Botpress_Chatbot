@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 const BottomNavigation = () => {
   const Tab = createBottomTabNavigator();
-  const conversation_id = useSelector((state: any) => state.app.conversation_id);
+  const conversation_id = useSelector((state: any) => state.conversation.selectedConversationId);
 
   return (
     <Tab.Navigator

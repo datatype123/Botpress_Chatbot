@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { launchImageLibrary } from "react-native-image-picker";
 import { fetchUserData } from "../services/apiAccount"; // Import API function
 import CONFIG from "../config";
+import { RootState } from "../redux/store";
 
 
 {/**Lấy data user từ API xong mới render component */}
@@ -20,13 +21,16 @@ const AccountScreen = () => {
   const [nickname, setNickname] = useState("");
   const [profile, setProfile] = useState("");
   const [loading, setLoading] = useState(true);
-  const [logout,setLogout] = useState(false);
-  const user_key = useSelector((state:any) => state.app.user_key);
+  const user_key = useSelector((state:RootState) => state.login.userKey);
 
 
   /**Fetch user data from API before render component */
   useEffect(() => {
-    if (!user_key) return;
+    console.log("user_key:", user_key); // Kiểm tra giá trị user_key
+    if (!user_key) {
+      console.warn("user_key is undefined. Skipping API call.");
+      return;
+    }
 
     const loadUserData = async () => {
       const userData: { user?: { id?: string; name?: string; profile?: string } } = await fetchUserData(user_key);
@@ -39,7 +43,7 @@ const AccountScreen = () => {
           console.error("Invalid API response:", userData);
         }
 
-        setLoading(false);
+        setLoading(false); // Đặt loading thành false sau khi hoàn tất
     };
 
     loadUserData();

@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { 
   View, Text, FlatList, StyleSheet, Image, ActivityIndicator, TouchableOpacity, RefreshControl
 } from 'react-native';
-import { getAllConversations } from '../services/apiConversations';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { appActions } from '../redux/slice';
 import { format } from 'date-fns'; // Import thư viện date-fns
+import { RootState } from '../redux/store';
+import { conversationActions } from '../redux/conversation/conversationSlice';
 
 interface ChatItem {
   id: string;
@@ -17,37 +17,25 @@ interface ChatItem {
 }
 
 const GroupChat: React.FC = () => {
-  const user_key = useSelector((state: any) => state.app.user_key);
   const dispatch = useDispatch();
-  const [conversations, setConversations] = useState<ChatItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
+  const conversations = useSelector((state: RootState) => state.conversation.conversations);
+  const loading = useSelector((state: RootState) => state.conversation.loading['fetchConversations']);
+  const userKey = useSelector((state: RootState) => state.login.userKey);
 
-  // Fetch Conversations
-  const fetchConversations = async () => {
-    setLoading(true);
-    try {
-      const data = await getAllConversations(user_key);
-      setConversations(data);
-    } catch (error) {
-      console.error('Error fetching conversations:', error);
-      setConversations([]); // Ensure empty array on failure
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
-  };
+  // Fetch conversations khi component được mount
+useEffect(() => {
+  if (userKey) {
+    dispatch(conversationActions.fetchConversationsrequest(userKey));
+  }
+}, [dispatch, userKey]);
 
-  useEffect(() => {
-    fetchConversations();
-  }, []);
+const onRefresh = useCallback(() => {
+  if (userKey) {
+    dispatch(conversationActions.fetchConversationsrequest(userKey));
+  }
+}, [dispatch, userKey, conversations]);
 
-  // Pull-to-refresh function
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    fetchConversations();
-  }, []);
 
   const renderItem = ({ item }: { item: ChatItem }) => {
     // Định dạng ngày giờ
@@ -58,7 +46,9 @@ const GroupChat: React.FC = () => {
       <TouchableOpacity
         style={styles.chatItemContainer}
         onPress={() => {
-          dispatch(appActions.setConversationId(item.id));
+          dispatch(conversationActions.selectConversation(item.id));
+          console.log("Selected Conversation ID:", userKey);
+          dispatch(conversationActions.fetchHistoryConversation({ conversationId: item.id, userKey: userKey }));
           navigation.navigate('Chat');
         }}>
         <Image source={require('../assets/conversations.png')} style={styles.avatar} />
@@ -73,17 +63,25 @@ const GroupChat: React.FC = () => {
     );
   };
 
+  // Adapt conversations to match ChatItem interface
+  const chatItems: ChatItem[] = conversations.map((conv: any) => ({
+    id: conv.id,
+    createdAt: conv.createdAt,
+    updatedAt: conv.updatedAt ?? conv.createdAt,
+    avatar: conv.avatar ?? '', // Provide a fallback if avatar is missing
+  }));
+
   return (
     <View style={styles.container}>
       {loading ? (
         <ActivityIndicator size="large" color="#007bff" />
       ) : (
         <FlatList
-          data={conversations}
+          data={chatItems}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={true}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}
           ListEmptyComponent={<Text style={styles.noConversationsText}>Sorry, you have no conversations.</Text>}
         />
       )}
@@ -159,10 +157,10 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 6,
   },
-  dateTime:{
-    display:'flex',
-    flexDirection:"row",
-    justifyContent:"space-between"
+  dateTime: {
+    display: 'flex',
+    flexDirection: "row",
+    justifyContent: "space-between"
   }
 });
 

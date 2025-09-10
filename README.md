@@ -74,6 +74,11 @@ Dưới đây là các màn hình cần có trong ứng dụng:
 - **Chia sẻ thông tin, dữ liệu**: Chia sẻ thông tin và dữ liệu người dùng.
 - **Xây dựng work-flow**: Xây dựng 1 kịch bản riêng cho bot phù hợp với nhu cầu.
 
-## 7.How to Use:
-- Copy link githubg source code
-- 
+## 7. Ảnh minh họa giao diện:
+
+<img width="200" height="400" alt="login" src="https://github.com/user-attachments/assets/94cd7af1-b8cc-4d1b-8644-96f3ddee10ec" />
+<img width="200" height="400" alt="login" src="https://github.com/user-attachments/assets/898c5224-f412-4ff5-9480-848b3d3284e8" />
+<img width="200" height="400" alt="login" src="https://github.com/user-attachments/assets/f99ab58a-ad07-42a1-be3a-456b41e951e2" />
+<img width="200" height="400" alt="login(1)" src="https://github.com/user-attachments/assets/cc892d49-b94c-4da6-beb9-56e1e9eb43aa" />
+
+

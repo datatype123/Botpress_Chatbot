@@ -16,7 +16,7 @@
 
 Dưới đây là danh sách các tính năng cần thiết và các hàm tương ứng:
 
-### a. Xác thực người dùng ✅ (Đã hoàn thành)
+### a. Xác thực người dùng (Đã hoàn thành)
 - **Tính năng**:
   - Đăng nhập/Đăng ký.
   - Hồ sơ người dùng (hình đại diện, tên hiển thị, v.v.).
@@ -27,19 +27,18 @@ Dưới đây là danh sách các tính năng cần thiết và các hàm tươn
   - Phản hồi từ chatbot AI.
   - Hiển thị trạng thái đang nhập và tin nhắn đã đọc.
 
-### c. Tích hợp chatbot AI 🛠 (Đã hoàn thành)
+### c. Tích hợp chatbot AI  (Đã hoàn thành)
 - **Tính năng**:
   - Phản hồi tự động cho câu hỏi của người dùng.
-  - Tùy chỉnh hành vi chatbot qua bảng điều khiển Sendbird.
 
 ### d. Quản lý kênh chat (Đã hoàn thành)
 - **Tính năng**:
   - Tham gia hoặc tạo kênh chat.
-  - Hỗ trợ kênh công khai và riêng tư.(đang phát triển)
+  - Hỗ trợ kênh công khai và riêng tư.(tính năng đang phát triển)
 
 ### f. Cài đặt người dùng
 - **Tính năng**:
-  - Chỉnh sửa hồ sơ cá nhân.(đang update)
+  - Chỉnh sửa hồ sơ cá nhân.(tính năng đang phát triển)
   - Đăng xuất.
 
 ---
@@ -62,11 +61,11 @@ Dưới đây là các màn hình cần có trong ứng dụng:
 3. **Tính năng chat**: Xây dựng giao diện chat và kích hoạt chatbot AI.
 4. **Cài đặt và quản lý hồ sơ**: Thêm tính năng chỉnh sửa hồ sơ và cài đặt.
 5. **Kiểm tra và khắc phục lỗi**: Đảm bảo mọi tính năng hoạt động trơn tru.
-66. **Triển khai**: Build ứng dụng trên Android .
+6. **Triển khai**: Build ứng dụng trên Android .
 
 ---
 
-## 6. Nâng cấp tính năng (Tùy chọn)
+## 6. Nâng cấp tính năng (Các tính năng có thể được phát triển trong tương lai)
 - **Logic AI tùy chỉnh**: Tạo dịch vụ backend xử lý chatbot thông minh hơn.
 - **Chia sẻ tệp**: Hỗ trợ gửi hình ảnh, video và tài liệu.
 - **Phân tích dữ liệu**: Theo dõi hành vi người dùng và hiệu suất ứng dụng.
